@@ -1,0 +1,7 @@
+{
+  "name": "Expiry Butler - Life Reminder",
+  "description": "Manage your subscriptions, food, documents, and insurance expiries in one place with AI-powered scanning and smart reminders.",
+  "requestFramePermissions": [
+    "camera"
+  ]
+}
