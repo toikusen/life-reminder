@@ -10,6 +10,7 @@ lerna-debug.log*
 node_modules
 dist
 dist-ssr
+out-tsc
 *.local
 
 # Editor directories and files
@@ -18,6 +19,13 @@ dist-ssr
 .idea
 .DS_Store
 *.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Angular
+.angular/
 *.ntvs*
 *.njsproj
 *.sln

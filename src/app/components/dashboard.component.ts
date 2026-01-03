@@ -1,0 +1,100 @@
+import { Component, Input, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { ExpiryItem, Category } from '../types';
+import { CATEGORY_COLORS } from '../constants';
+
+@Component({
+  selector: 'app-dashboard',
+  standalone: true,
+  imports: [CommonModule],
+  template: `
+    <div class="space-y-6 animate-fadeIn">
+      <div class="grid grid-cols-2 gap-4">
+        <div class="bg-white p-4 rounded-3xl shadow-sm border border-slate-100 flex flex-col items-center justify-center text-center">
+          <div class="w-10 h-10 bg-amber-100 text-amber-600 rounded-full flex items-center justify-center mb-2 text-xl">
+            ⚠
+          </div>
+          <span class="text-2xl font-bold text-slate-800">{{ stats.urgent.length }}</span>
+          <span class="text-xs text-slate-500 font-medium">7天內到期</span>
+        </div>
+        <div class="bg-white p-4 rounded-3xl shadow-sm border border-slate-100 flex flex-col items-center justify-center text-center">
+          <div class="w-10 h-10 bg-rose-100 text-rose-600 rounded-full flex items-center justify-center mb-2 text-xl">
+            🕐
+          </div>
+          <span class="text-2xl font-bold text-slate-800">{{ stats.expired.length }}</span>
+          <span class="text-xs text-slate-500 font-medium">已過期</span>
+        </div>
+      </div>
+
+      <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-100">
+        <h3 class="text-sm font-semibold text-slate-700 mb-4 flex items-center gap-2">
+          <span class="text-lg">📅</span>
+          到期分類分佈
+        </h3>
+        <div class="h-48 w-full">
+          <div *ngIf="stats.categoryData.length > 0" class="h-full flex items-center justify-center text-slate-500">
+            <!-- 圖表會在此顯示 -->
+            <div class="text-center">
+              <p class="text-sm">分類分佈圖表</p>
+              <div class="grid grid-cols-2 gap-2 mt-4">
+                <div *ngFor="let entry of stats.categoryData" class="flex items-center gap-2 text-[10px] text-slate-500">
+                  <div [ngClass]="['w-2 h-2 rounded-full', getCategoryColorClass(entry.name)]"></div>
+                  {{ entry.name }}: {{ entry.value }}
+                </div>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="stats.categoryData.length === 0" class="h-full flex items-center justify-center text-slate-400 text-sm">
+            尚無數據，請先新增項目
+          </div>
+        </div>
+      </div>
+    </div>
+  `,
+  styles: [`
+    :host {
+      display: block;
+    }
+  `]
+})
+export class DashboardComponent implements OnInit {
+  @Input() items: ExpiryItem[] = [];
+
+  stats = {
+    urgent: [] as ExpiryItem[],
+    expired: [] as ExpiryItem[],
+    categoryData: [] as { name: string; value: number }[]
+  };
+
+  ngOnInit(): void {
+    this.calculateStats();
+  }
+
+  ngOnChanges(): void {
+    this.calculateStats();
+  }
+
+  private calculateStats(): void {
+    const now = new Date();
+
+    this.stats.urgent = this.items.filter(item => {
+      const expiry = new Date(item.expiryDate);
+      const diffDays = Math.ceil((expiry.getTime() - now.getTime()) / (1000 * 3600 * 24));
+      return diffDays <= 7 && diffDays >= 0;
+    });
+
+    this.stats.expired = this.items.filter(item => new Date(item.expiryDate) < now);
+
+    this.stats.categoryData = Object.values(Category)
+      .map(cat => ({
+        name: cat,
+        value: this.items.filter(item => item.category === cat).length
+      }))
+      .filter(d => d.value > 0);
+  }
+
+  getCategoryColorClass(categoryName: string): string {
+    const colorClass = CATEGORY_COLORS[categoryName as Category];
+    return colorClass.split(' ')[0];
+  }
+}

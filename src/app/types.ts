@@ -1,4 +1,3 @@
-
 export enum Category {
   SUBSCRIPTION = '訂閱服務',
   FOOD = '食品生鮮',

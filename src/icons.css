@@ -1,0 +1,112 @@
+/* Icon Styles using Unicode and CSS */
+
+.icon-plus::before {
+  content: "+";
+  font-weight: bold;
+  font-size: 1.5rem;
+}
+
+.icon-dashboard::before {
+  content: "≡";
+}
+
+.icon-list::before {
+  content: "☰";
+}
+
+.icon-chart::before {
+  content: "📊";
+}
+
+.icon-settings::before {
+  content: "⚙";
+}
+
+.icon-edit::before {
+  content: "✏";
+}
+
+.icon-delete::before {
+  content: "🗑";
+}
+
+.icon-close::before {
+  content: "✕";
+}
+
+.icon-alert::before {
+  content: "⚠";
+}
+
+.icon-clock::before {
+  content: "🕐";
+}
+
+.icon-calendar::before {
+  content: "📅";
+}
+
+.icon-wallet::before {
+  content: "💰";
+}
+
+.icon-bell::before {
+  content: "🔔";
+}
+
+.icon-globe::before {
+  content: "🌐";
+}
+
+.icon-download::before {
+  content: "⬇";
+}
+
+.icon-upload::before {
+  content: "⬆";
+}
+
+.icon-shield::before {
+  content: "🛡";
+}
+
+.icon-info::before {
+  content: "ℹ";
+}
+
+.icon-chevron::before {
+  content: "›";
+  font-size: 1.2rem;
+}
+
+.icon-camera::before {
+  content: "📷";
+}
+
+.icon-sparkles::before {
+  content: "✨";
+}
+
+.icon-loader::before {
+  content: "⟳";
+  display: inline-block;
+  animation: spin 1s linear infinite;
+}
+
+.icon-dollar::before {
+  content: "$";
+  font-weight: bold;
+}
+
+.icon-trending::before {
+  content: "📈";
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
