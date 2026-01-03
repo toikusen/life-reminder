@@ -21,15 +21,30 @@
       <span class="text-lg">📅</span>
       到期分類分佈
     </h3>
-    <div class="h-48 w-full">
-      <div *ngIf="stats.categoryData.length > 0" class="h-full flex items-center justify-center text-slate-500">
-        <!-- 圖表會在此顯示 -->
-        <div class="text-center">
-          <p class="text-sm">分類分佈圖表</p>
-          <div class="grid grid-cols-2 gap-2 mt-4">
-            <div *ngFor="let entry of stats.categoryData" class="flex items-center gap-2 text-[10px] text-slate-500">
-              <div [ngClass]="['w-2 h-2 rounded-full', getCategoryColorClass(entry.name)]"></div>
-              {{ entry.name }}: {{ entry.value }}
+    <div class="h-64 w-full">
+      <div *ngIf="stats.categoryData.length > 0" class="h-full flex flex-col items-center justify-center">
+        <!-- Donut Chart -->
+        <div class="flex items-center justify-center gap-8 w-full">
+          <!-- Chart SVG -->
+          <svg viewBox="0 0 120 120" class="w-40 h-40 flex-shrink-0">
+            <g *ngFor="let segment of getDonutSegments()" [attr.data-name]="segment.name">
+              <path 
+                [attr.d]="segment.path"
+                [attr.fill]="segment.color"
+                class="transition-opacity hover:opacity-80 cursor-pointer"
+              />
+            </g>
+          </svg>
+          
+          <!-- Legend -->
+          <div class="flex flex-col gap-2">
+            <div *ngFor="let entry of stats.categoryData" class="flex items-center gap-3 text-sm">
+              <div 
+                class="w-3 h-3 rounded-full flex-shrink-0"
+                [style.background-color]="entry.color"
+              ></div>
+              <span class="text-slate-600 font-medium">{{ entry.name }}</span>
+              <span class="text-slate-400 font-semibold">{{ entry.value }}</span>
             </div>
           </div>
         </div>
